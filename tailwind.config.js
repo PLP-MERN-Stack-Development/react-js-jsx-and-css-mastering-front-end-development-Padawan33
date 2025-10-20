@@ -3,7 +3,7 @@
 export default {
   content: [
     "./index.html",
-    // This line is crucial for scanning your React files
+    // Must include the wildcard path for JSX files in the src folder:
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
