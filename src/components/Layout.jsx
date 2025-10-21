@@ -5,7 +5,7 @@ import Footer from './Footer';
 function Layout({ children }) {
   return (
     // CRITICAL: min-h-screen for full viewport height, flex-col for stacking
-    <div className="flex flex-col min-h-screen"> 
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <Navbar />
       
       {/* flex-grow pushes Footer down. w-full and max-w-7xl center the content. */}
@@ -17,4 +17,5 @@ function Layout({ children }) {
     </div>
   );
 }
+
 export default Layout;
