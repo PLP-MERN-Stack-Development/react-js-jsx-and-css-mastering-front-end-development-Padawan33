@@ -2,8 +2,8 @@ import React from 'react';
 
 function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-100">
-      <h1 className="text-4xl font-bold text-green-800">Register Page Content</h1>
+    <div className="flex flex-col items-center justify-center bg-green-500 p-8 w-full h-full"> 
+      <h1 className="text-4xl font-bold text-white">Register Page Content</h1>
     </div>
   );
 }

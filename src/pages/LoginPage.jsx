@@ -2,8 +2,8 @@ import React from 'react';
 
 function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-100">
-      <h1 className="text-4xl font-bold text-blue-800">Login Page Content</h1>
+    <div className="flex flex-col items-center justify-center bg-blue-500 p-8 w-full h-full"> 
+      <h1 className="text-4xl font-bold text-white">Login Page Content</h1>
     </div>
   );
 }
