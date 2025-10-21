@@ -1,9 +1,11 @@
 import React from 'react';
+import LoginForm from '../components/LoginForm';
 
 function LoginPage() {
+  // We use a simple flex wrapper to center the LoginForm on the page content area
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-500 p-8 w-full h-full"> 
-      <h1 className="text-4xl font-bold text-white">Login Page Content</h1>
+    <div className="flex justify-center items-center w-full min-h-full py-10 bg-blue-500">
+      <LoginForm />
     </div>
   );
 }
