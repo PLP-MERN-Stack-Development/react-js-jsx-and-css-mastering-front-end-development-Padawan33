@@ -1,18 +1,18 @@
-// src/components/TaskManager.jsx (FINAL CORRECTED CODE)
+// src/components/TaskManager.jsx (API Data Browser with new content)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from './Card';
 
 function TaskManager() {
   // States for API data, loading, and error
-  const [users, setUsers] = useState([]);
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   // States for search and pagination 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 2; // 10 users / 5 per page = 2 pages
+  const totalPages = 10; // 500 comments total, 50 per page = 10 pages
 
   // Pagination Handlers
   const goToNextPage = () => {
@@ -25,53 +25,53 @@ function TaskManager() {
   
   // useEffect for fetching data (API Integration)
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchComments = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Fetching data from the USERS endpoint
+        // Fetching data from the COMMENTS endpoint, 50 per page
         const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/users?_page=${currentPage}&_limit=5`
+          `https://jsonplaceholder.typicode.com/comments?_page=${currentPage}&_limit=50`
         );
         
-        setUsers(response.data);
+        setComments(response.data);
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to load user data from the API. Check the console for network errors.");
+        setError("Failed to load topic data from the API. Check the console for network errors.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUsers();
+    fetchComments();
   }, [currentPage]);
 
-  // Filter Logic
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter Logic (Requirement 5) - filters by comment NAME (which acts as topic)
+  const filteredComments = comments.filter(comment =>
+    comment.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // --- RENDERING LOGIC (Requirement 3: Loading/Error States) ---
+  // --- RENDERING LOGIC ---
   let content;
 
   if (loading) {
-    content = <p className="text-center py-10 text-xl text-blue-500">Loading users... 🔄</p>;
+    content = <p className="text-center py-10 text-xl text-blue-500">Loading topics... 🔄</p>;
   } else if (error) {
     content = <p className="text-center py-10 text-xl text-red-600 font-bold">{error}</p>;
-  } else if (filteredUsers.length === 0 && searchTerm) {
+  } else if (filteredComments.length === 0 && searchTerm) {
     content = <p className="text-center py-10 text-gray-500">No results found for "{searchTerm}".</p>;
   } else {
-    // Display Fetched Data in a Grid (Requirement 2)
+    // Display Fetched Data in a Grid 
     content = (
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {filteredUsers.map(user => (
-          // Card displays Name, Email, and Company
-          <Card key={user.id} title={user.name} className="hover:shadow-lg transition"> 
-            <p className="text-gray-600 dark:text-gray-400 font-medium">Email: {user.email}</p>
-            {/* CRITICAL FIX: Using optional chaining ?. to safely access nested properties */}
-            <p className="text-gray-600 dark:text-gray-400">Company: {user.company?.name || 'N/A'}</p>
-            <p className="text-sm text-blue-500 mt-2">User ID: {user.id}</p>
+        {/* Loop through filteredComments */}
+        {filteredComments.map(comment => (
+          // Card displays Topic (name) and content (body)
+          <Card key={comment.id} title={comment.name} className="hover:shadow-lg transition"> 
+            <p className="text-gray-600 dark:text-gray-400 font-medium">Topic: {comment.name.substring(0, 50)}...</p>
+            <p className="text-gray-600 dark:text-gray-400 italic">User Email: {comment.email}</p>
+            <p className="text-gray-800 dark:text-white mt-2">Content: {comment.body.substring(0, 150)}...</p>
           </Card>
         ))}
       </div>
@@ -80,12 +80,12 @@ function TaskManager() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <Card title="API User Browser" className="w-full max-w-4xl">
+      <Card title="API Topics Browser" className="w-full max-w-4xl">
         
         {/* Search Input */}
         <input
           type="text"
-          placeholder="Search user names..."
+          placeholder="Search topic titles (e.g., health, politics)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-3 border border-gray-300 rounded-lg mb-6 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"

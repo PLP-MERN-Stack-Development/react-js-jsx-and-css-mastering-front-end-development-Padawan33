@@ -1,74 +1,96 @@
-import React, { createContext, useContext, useEffect } from 'react';
-// Import the custom hook for persistence
-import useLocalStorage from '../hooks/useLocalStorage'; 
+// src/context/TaskContext.jsx (REBUILT FOR STABILITY)
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const TaskContext = createContext();
 
-// Create an initial state for tasks
-const initialTasks = [
-  { id: 1, text: 'Complete Task Manager Setup', completed: false },
-  { id: 2, text: 'Integrate Theme Context', completed: true },
-];
-
-export const TaskProvider = ({ children }) => {
-  // Use custom hook for state management and local storage persistence
-  const [tasks, setTasks] = useLocalStorage('tasks-list', initialTasks);
-  const [filter, setFilter] = useLocalStorage('tasks-filter', 'all'); // all, active, completed
-
-  // 1. Add new tasks
-  const addTask = (text) => {
-    const newTask = {
-      id: Date.now(),
-      text,
-      completed: false,
-    };
-    setTasks((prevTasks) => [newTask, ...prevTasks]);
-  };
-
-  // 2. Mark tasks as completed
-  const toggleTask = (id) => {
-    setTasks((prevTasks) => 
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
-  // 3. Delete tasks
-  const deleteTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  };
-  
-  // 4. Filter tasks (handled in the component, but state is managed here)
-  const changeFilter = (newFilter) => {
-      setFilter(newFilter);
-  };
-
-  // Logic to compute the filtered list
-  const filteredTasks = tasks.filter(task => {
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
-    return true; // 'all'
-  });
-  
-  // Combine all state and functions into the value object
-  const contextValue = {
-    tasks: filteredTasks, // Provide filtered list to consumers
-    activeFilter: filter,
-    addTask,
-    toggleTask,
-    deleteTask,
-    changeFilter,
-  };
-
-  return (
-    <TaskContext.Provider value={contextValue}>
-      {children}
-    </TaskContext.Provider>
-  );
+// Function to safely get data from localStorage or return default
+const getInitialTasks = () => {
+    try {
+        const storedTasks = localStorage.getItem('tasks');
+        return storedTasks ? JSON.parse(storedTasks) : [];
+    } catch (e) {
+        console.error("Could not load tasks from localStorage:", e);
+        return [];
+    }
 };
 
-// Custom hook to use the TaskContext
+export const TaskProvider = ({ children }) => {
+    const [tasks, setTasks] = useState(getInitialTasks);
+    const [newTaskText, setNewTaskText] = useState('');
+    const [activeFilter, setActiveFilter] = useState('all');
+    const [theme, setTheme] = useState('light'); // Theme state is managed separately but included here for completeness if you used it in TaskManager originally
+
+    // Save tasks to local storage whenever the tasks state changes
+    useEffect(() => {
+        try {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        } catch (e) {
+            console.error("Could not save tasks to localStorage:", e);
+        }
+    }, [tasks]);
+
+    // Handlers
+    const handleAddTask = (e) => {
+        e.preventDefault();
+        if (newTaskText.trim() === '') return;
+
+        const newTask = {
+            id: Date.now(),
+            text: newTaskText.trim(),
+            completed: false,
+        };
+
+        setTasks([...tasks, newTask]);
+        setNewTaskText('');
+    };
+
+    const toggleTask = (id) => {
+        setTasks(tasks.map(task =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+        ));
+    };
+
+    const deleteTask = (id) => {
+        setTasks(tasks.filter(task => task.id !== id));
+    };
+
+    const changeFilter = (filterName) => {
+        setActiveFilter(filterName);
+    };
+
+    const filteredTasks = () => {
+        switch (activeFilter) {
+            case 'active':
+                return tasks.filter(task => !task.completed);
+            case 'completed':
+                return tasks.filter(task => task.completed);
+            case 'all':
+            default:
+                return tasks;
+        }
+    };
+
+    const value = {
+        tasks,
+        activeFilter,
+        newTaskText,
+        setNewTaskText,
+        handleAddTask,
+        toggleTask,
+        deleteTask,
+        changeFilter,
+        filteredTasks,
+        theme, 
+        setTheme 
+    };
+
+    return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
+};
+
 export const useTasks = () => {
-  return useContext(TaskContext);
+    const context = useContext(TaskContext);
+    if (context === undefined) {
+        throw new Error('useTasks must be used within a TaskProvider');
+    }
+    return context;
 };
