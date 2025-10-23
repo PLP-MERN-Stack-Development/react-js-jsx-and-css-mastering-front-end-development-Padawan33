@@ -1,10 +1,10 @@
-// src/App.jsx (FINAL CORRECTED VERSION)
+// src/App.jsx (REBUILT CLEAN STRUCTURE)
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Import ALL necessary providers
+// Import necessary providers
 import { ThemeProvider } from './context/ThemeContext'; 
-import { TaskProvider } from './context/TaskContext'; // <-- TaskProvider is needed for LocalTaskManager
+import { TaskProvider } from './context/TaskContext';
 
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
@@ -15,7 +15,7 @@ import APIBrowserPage from './pages/APIBrowserPage';
 function App() {
   return (
     <ThemeProvider> 
-      <TaskProvider> 
+      <TaskProvider>
         <Router>
           <Routes>
             <Route path="/" element={<Layout><HomePage /></Layout>} />

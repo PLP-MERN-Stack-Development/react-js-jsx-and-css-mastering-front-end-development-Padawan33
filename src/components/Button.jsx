@@ -1,4 +1,4 @@
-// src/components/Button.jsx (COMPLETE Button Component with Animation)
+// src/components/Button.jsx (COMPLETE Button Component with Default Export Fix)
 import React from 'react';
 
 function Button({ children, onClick, variant = 'primary', className = '', type = 'button', disabled = false }) {
@@ -16,8 +16,8 @@ function Button({ children, onClick, variant = 'primary', className = '', type =
     default:
       colorClasses = 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500';
   }
-  
-  // Requirement 4: Added transform and hover:scale-105 for interactive animation
+
+  // Added transform and hover:scale-105 for interactive animation
   const baseClasses = `px-4 py-2 rounded-lg font-semibold text-white transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 disabled:bg-gray-400 disabled:hover:scale-100 ${colorClasses} ${className}`;
 
   return (
@@ -32,4 +32,5 @@ function Button({ children, onClick, variant = 'primary', className = '', type =
   );
 }
 
+// THIS MUST BE `export default` for your imports to work!
 export default Button;
