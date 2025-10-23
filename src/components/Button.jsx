@@ -1,27 +1,31 @@
+// src/components/Button.jsx (COMPLETE Button Component with Animation)
 import React from 'react';
 
-function Button({ children, variant = 'primary', onClick, type = 'button', className = '' }) {
-  let baseStyles = 'px-4 py-2 font-semibold rounded-lg transition-colors duration-200 ';
-  let variantStyles = '';
-
+function Button({ children, onClick, variant = 'primary', className = '', type = 'button', disabled = false }) {
+  let colorClasses = '';
   switch (variant) {
+    case 'primary':
+      colorClasses = 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500';
+      break;
     case 'secondary':
-      variantStyles = 'bg-gray-500 hover:bg-gray-600 text-white';
+      colorClasses = 'bg-gray-500 hover:bg-gray-600 focus:ring-gray-400';
       break;
     case 'danger':
-      variantStyles = 'bg-red-600 hover:bg-red-700 text-white';
+      colorClasses = 'bg-red-600 hover:bg-red-700 focus:ring-red-500';
       break;
-    case 'primary':
     default:
-      variantStyles = 'bg-blue-600 hover:bg-blue-700 text-white';
-      break;
+      colorClasses = 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500';
   }
+  
+  // Requirement 4: Added transform and hover:scale-105 for interactive animation
+  const baseClasses = `px-4 py-2 rounded-lg font-semibold text-white transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 disabled:bg-gray-400 disabled:hover:scale-100 ${colorClasses} ${className}`;
 
   return (
     <button
-      type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles} ${className}`}
+      type={type}
+      disabled={disabled}
+      className={baseClasses}
     >
       {children}
     </button>

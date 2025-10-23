@@ -1,4 +1,4 @@
-// src/components/LocalTaskManager.jsx (Original Task Manager/CRUD)
+// src/components/LocalTaskManager.jsx (COMPLETE Local Task Manager)
 import React, { useState } from 'react';
 import Card from './Card';
 import Button from './Button';
@@ -14,7 +14,11 @@ function LocalTaskManager() {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <Card title="Local Task Manager" className="w-full max-w-lg dark:bg-gray-700 dark:border-gray-600">
+      <Card 
+        title="Local Task Manager" 
+        // Requirement 1: Responsive max width added
+        className="w-full max-w-sm sm:max-w-lg mx-auto dark:bg-gray-700 dark:border-gray-600"
+      >
         
         {/* Task Input Form */}
         <form onSubmit={handleAddTask} className="flex space-x-2 mb-6">

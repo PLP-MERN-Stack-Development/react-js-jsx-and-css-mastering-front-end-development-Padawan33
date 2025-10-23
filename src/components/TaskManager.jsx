@@ -1,4 +1,4 @@
-// src/components/TaskManager.jsx (API Data Browser with new content)
+// src/components/TaskManager.jsx (COMPLETE API Data Browser with Fixes)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from './Card';
@@ -47,9 +47,10 @@ function TaskManager() {
     fetchComments();
   }, [currentPage]);
 
-  // Filter Logic (Requirement 5) - filters by comment NAME (which acts as topic)
+  // Filter Logic (Requirement 5) - filters by comment NAME
   const filteredComments = comments.filter(comment =>
-    comment.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // Defensive filtering with optional chaining
+    comment.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false
   );
 
   // --- RENDERING LOGIC ---
@@ -62,16 +63,18 @@ function TaskManager() {
   } else if (filteredComments.length === 0 && searchTerm) {
     content = <p className="text-center py-10 text-gray-500">No results found for "{searchTerm}".</p>;
   } else {
-    // Display Fetched Data in a Grid 
+    // Display Fetched Data in a Grid (Requirement 1: Responsive Grid)
     content = (
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      // Added sm:grid-cols-2 for tablet/desktop view
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Loop through filteredComments */}
-        {filteredComments.map(comment => (
+        {filteredComments?.map(comment => (
           // Card displays Topic (name) and content (body)
           <Card key={comment.id} title={comment.name} className="hover:shadow-lg transition"> 
-            <p className="text-gray-600 dark:text-gray-400 font-medium">Topic: {comment.name.substring(0, 50)}...</p>
-            <p className="text-gray-600 dark:text-gray-400 italic">User Email: {comment.email}</p>
-            <p className="text-gray-800 dark:text-white mt-2">Content: {comment.body.substring(0, 150)}...</p>
+            {/* Defensive rendering with optional chaining */}
+            <p className="text-gray-600 dark:text-gray-400 font-medium">Topic: {comment.name?.substring(0, 50) || 'N/A'}...</p>
+            <p className="text-gray-600 dark:text-gray-400 italic">User Email: {comment.email || 'N/A'}</p>
+            <p className="text-gray-800 dark:text-white mt-2">Content: {comment.body?.substring(0, 150) || 'N/A'}...</p>
           </Card>
         ))}
       </div>
