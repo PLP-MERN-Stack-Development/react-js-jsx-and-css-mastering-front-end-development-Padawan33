@@ -33,7 +33,7 @@ const HomePage = () => {
       <section className="py-12 px-4 max-w-7xl mx-auto">
         {/* Updated line: Added dark:text-white */}
         <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900 dark:text-white">
-            Your Tasks. Your Flow.
+            Your Work, Streamlined.
         </h1>
         <LocalTaskManager />
       </section>

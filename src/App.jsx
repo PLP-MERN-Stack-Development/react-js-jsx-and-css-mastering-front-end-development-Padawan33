@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
 // FIX: Added .jsx extension to resolve compilation errors
-import Layout from './components/Layout.jsx'; 
-import HomePage from './pages/HomePage.jsx';
-import APIBrowser from './pages/APIBrowserPage.jsx'; 
-import LoginPage from './pages/LoginPage.jsx'; 
-import Button from './components/Button.jsx'; 
+import Layout from './components/Layout'; 
+import HomePage from './pages/HomePage';
+import APIBrowser from './pages/APIBrowserPage'; 
+import LoginPage from './pages/LoginPage'; 
+import Button from './components/Button'; 
 
-import { TaskProvider } from './context/TaskContext.jsx'; 
-import Contacts from './pages/Contacts.jsx'; 
+import { TaskProvider } from './context/TaskContext'; 
+import { ThemeProvider } from './context/ThemeContext';
+import Contacts from './pages/Contacts'; 
 
 
 // Updated component for Register Page with dark mode fixes
@@ -70,12 +71,13 @@ function App() {
     };
     
     return (
-        // onNavigate prop is passed down to Layout, which presumably passes it to Navbar
-        <Layout onNavigate={handleNavigation}>
+        <ThemeProvider>
             <TaskProvider>
-                {renderPage()}
+                <Layout onNavigate={handleNavigation}>
+                    {renderPage()}
+                </Layout>
             </TaskProvider>
-        </Layout>
+        </ThemeProvider>
     );
 }
 

@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 
-// 1. Import the provider
-import { TaskProvider } from './context/TaskContext.jsx'; 
-
-
+// The App component already wraps the necessary providers (ThemeProvider, TaskProvider).
+// Keep the root render lean to avoid duplicating providers.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* 2. Wrap the entire App component */}
-    <TaskProvider>
-      <App />
-    </TaskProvider>
+    <App />
   </React.StrictMode>,
 );

@@ -10,10 +10,10 @@ const dummyContacts = [
 
 const companyAddress = {
     street: "123 Productivity Lane",
-    city: "San Francisco",
-    state: "CA",
+    city: "Nairobi",
+    state: "Nairobi County",
     zip: "94107",
-    country: "USA"
+    country: "KENYA"
 };
 
 function Contacts() {

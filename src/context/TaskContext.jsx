@@ -1,4 +1,4 @@
-// src/context/TaskContext.jsx (Updated for Reorder Tasks)
+// src/context/TaskContext.jsx (Updated for Reorder Tasks and Theme Context)
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const TaskContext = createContext();
@@ -24,6 +24,7 @@ const getInitialTasks = () => {
 };
 
 export const TaskProvider = ({ children }) => {
+    // --- TASK STATE ---
     const [tasks, setTasks] = useState(getInitialTasks);
     const [newTaskText, setNewTaskText] = useState('');
     const [newDueDate, setNewDueDate] = useState('');
@@ -36,6 +37,18 @@ export const TaskProvider = ({ children }) => {
     const [newReminderTime, setNewReminderTime] = useState('');
     const [newDescription, setNewDescription] = useState(''); 
 
+    // --- CRITICAL FIX: THEME STATE ---
+    const [theme, setTheme] = useState(
+        localStorage.getItem('theme') || 'light'
+    );
+    
+    // --- CRITICAL FIX: THEME TOGGLE HANDLER ---
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+
+
+    // --- useEffect for TASKS ---
     useEffect(() => {
         try {
             // Save the entire tasks array, including order
@@ -45,7 +58,17 @@ export const TaskProvider = ({ children }) => {
         }
     }, [tasks]);
 
-    // Handlers
+    // --- CRITICAL FIX: useEffect for THEME ---
+    useEffect(() => {
+        try {
+            localStorage.setItem('theme', theme);
+        } catch (e) {
+            console.error("Could not save theme to localStorage:", e);
+        }
+    }, [theme]);
+
+
+    // Handlers (handleAddTask, moveTask, toggleTask, etc. remain the same)
     const handleAddTask = (e) => {
         e.preventDefault();
         if (newTaskText.trim() === '') return;
@@ -64,10 +87,8 @@ export const TaskProvider = ({ children }) => {
             description: newDescription.trim() || null, 
         };
 
-        // Add the new task to the START of the list
         setTasks([newTask, ...tasks]); 
         
-        // Reset inputs
         setNewTaskText('');
         setNewDueDate('');
         setNewTime('');
@@ -78,7 +99,6 @@ export const TaskProvider = ({ children }) => {
         setNewDescription(''); 
     };
 
-    // NEW HANDLER: Move a task up or down in the list
     const moveTask = (id, direction) => {
         setTasks(prevTasks => {
             const index = prevTasks.findIndex(task => task.id === id);
@@ -86,10 +106,8 @@ export const TaskProvider = ({ children }) => {
 
             let newIndex = index + (direction === 'up' ? -1 : 1);
 
-            // Bounds check
             if (newIndex < 0 || newIndex >= prevTasks.length) return prevTasks;
             
-            // Perform the swap using array destructuring
             const newTasks = [...prevTasks];
             [newTasks[index], newTasks[newIndex]] = [newTasks[newIndex], newTasks[index]];
             
@@ -97,7 +115,6 @@ export const TaskProvider = ({ children }) => {
         });
     };
     
-    // Remaining handlers (toggleTask, deleteTask, editTask, addSubTask, toggleSubTask) are unchanged
     const toggleTask = (id) => {
         setTasks(tasks.map(task =>
             task.id === id ? { ...task, completed: !task.completed } : task
@@ -145,7 +162,6 @@ export const TaskProvider = ({ children }) => {
             return task;
         }));
     };
-    // End of unchanged handlers
 
     const getCategoryDetails = (categoryName) => {
         return categories.find(cat => cat.name === categoryName) || { name: categoryName, color: 'bg-gray-500' };
@@ -168,11 +184,9 @@ export const TaskProvider = ({ children }) => {
         setActiveFilter(filterName);
     };
     
-    // Note: filteredTasks will now automatically reflect the new order from tasks state.
     const filteredTasks = () => {
         switch (activeFilter) {
             case 'active':
-                // Active tasks should still appear in the order they were created/moved
                 return tasks.filter(task => !task.completed); 
             case 'completed':
                 return tasks.filter(task => task.completed);
@@ -182,6 +196,7 @@ export const TaskProvider = ({ children }) => {
         }
     };
 
+    // --- CRITICAL FIX: EXPORTING theme AND toggleTheme ---
     const value = {
         tasks,
         activeFilter,
@@ -212,18 +227,21 @@ export const TaskProvider = ({ children }) => {
         editTask,
         addSubTask,
         toggleSubTask,
-        moveTask,              // <--- NEW HANDLER
+        moveTask,              
         changeFilter,
         filteredTasks,
+        // Added theme management to the context value
+        theme,
+        toggleTheme,
     };
 
     return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
 };
 
-export const useTasks = () => {
+export const useTaskContext = () => {
     const context = useContext(TaskContext);
     if (context === undefined) {
-        throw new Error('useTasks must be used within a TaskProvider');
+        throw new Error('useTaskContext must be used within a TaskProvider');
     }
     return context;
 };

@@ -18,13 +18,13 @@ const LoginPage = ({ onNavigate }) => {
     // In a real app, form data would be sent here.
   };
 
-  return (
-    <div className="min-h-screen bg-white font-inter pt-16">
+    return (
+        <div className="min-h-screen bg-white dark:bg-gray-900 dark:text-white font-inter pt-16">
       
       {/* Top Section: Login */}
       <section className="pt-32 pb-12 px-4 max-w-sm mx-auto text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">Welcome Back</h1>
-          <div className="bg-white p-8 rounded-xl shadow-xl border border-gray-200 space-y-4">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">Welcome Back</h1>
+          <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-8 rounded-xl shadow-xl border border-gray-200 space-y-4">
               <form onSubmit={handleLogin} className="space-y-4"> {/* Use form and submit */}
                   <input 
                       type="email" 
@@ -46,7 +46,7 @@ const LoginPage = ({ onNavigate }) => {
                       Log In
                   </Button>
               </form>
-              <a href="#" className="text-sm text-gray-500 hover:text-emerald-500">Forgot Password?</a>
+              <a href="#" className="text-sm text-gray-500 dark:text-gray-300 hover:text-emerald-500">Forgot Password?</a>
           </div>
       </section>
 

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Card from './Card';
 import Button from './Button';
+import { useTaskContext } from '../context/TaskContext';
 import { 
     ArrowPathIcon, 
     PencilSquareIcon, 
@@ -11,7 +12,7 @@ import {
     ChevronUpIcon, 
     ChevronDownIcon 
 } from '@heroicons/react/24/outline'; 
-import { useTasks } from '../context/TaskContext';
+
 
 const filterButtons = ['all', 'active', 'completed'];
 
@@ -67,7 +68,7 @@ function LocalTaskManager() {
     moveTask,              
     changeFilter, 
     filteredTasks,
-  } = useTasks();
+  } = useTaskContext();
 
   const tasksToDisplay = filteredTasks(); 
   
@@ -121,60 +122,59 @@ function LocalTaskManager() {
 
 
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center w-full px-4">
       <Card 
         title="Focus Flow Task Manager" 
-        className="w-full max-w-sm sm:max-w-lg mx-auto dark:bg-gray-700 dark:border-gray-600"
+        className="w-full max-w-4xl mx-auto dark:bg-gray-700 dark:border-gray-600"
       >
         
         {/* Task Input Form */}
-        <form onSubmit={handleAddTask} className="flex flex-col space-y-3 mb-6">
+        <form onSubmit={handleAddTask} className="flex flex-col space-y-4 mb-6 w-full">
           
           {/* Main Input Row: Text Input and Add Button */}
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="text"
               value={newTaskText}
               onChange={(e) => setNewTaskText(e.target.value)}
               placeholder="Add a new task..."
-              className="flex-grow p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white"
+              className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white dark:border-gray-500"
             />
-            <Button type="submit" className="w-full sm:w-auto flex-shrink-0">Add Task</Button>
+            <Button type="submit" className="w-full sm:w-auto">Add Task</Button>
           </div>
           
-          {/* Due Date, Time & Category Inputs (Row 1 - Now Stacks on Mobile) */}
-          {/* Changed from flex-grow on each item to grid on mobile (sm:grid-cols-3) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"> 
+          {/* Due Date, Time & Category Inputs */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4"> 
             
             {/* Due Date Input Field */}
-            <div className="flex items-center space-x-2 w-full">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Date:</label>
+            <div className="flex flex-col w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm mb-1">Date:</label>
               <input
                 type="date"
                 value={newDueDate}
                 onChange={(e) => setNewDueDate(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full"
+                className="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full dark:border-gray-500"
               />
             </div>
             
             {/* Time Input Field */}
-            <div className="flex items-center space-x-2 w-full">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Time:</label>
+            <div className="flex flex-col w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm mb-1">Time:</label>
               <input
                 type="time"
                 value={newTime}
                 onChange={(e) => setNewTime(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full"
+                className="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full dark:border-gray-500"
               />
             </div>
             
             {/* Category Select Dropdown */}
-            <div className="flex items-center space-x-2 w-full">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Category:</label>
+            <div className="flex flex-col w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm mb-1">Category:</label>
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full"
+                className="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full dark:border-gray-500"
               >
                 {categories.map(cat => (
                   <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -188,12 +188,12 @@ function LocalTaskManager() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             
             {/* Recurrence Input */}
-            <div className="flex items-center space-x-2 w-full">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Recurrence:</label>
+            <div className="flex flex-col w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm mb-1">Recurrence:</label>
               <select
                 value={newRecurrence}
                 onChange={(e) => setNewRecurrence(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full"
+                className="p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full dark:border-gray-500"
               >
                 {RECURRENCE_OPTIONS.map(option => (
                   <option key={option} value={option}>{option}</option>

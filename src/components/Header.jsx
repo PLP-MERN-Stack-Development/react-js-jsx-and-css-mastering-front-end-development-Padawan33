@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'; 
+import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { name: 'Home', path: 'home' },
@@ -11,23 +12,13 @@ const navLinks = [
   { name: 'Contact', path: 'login' },
 ];
 
-// Mock dark mode state and toggle function (assuming global context handles the actual class toggling)
-const useDarkModeToggle = () => {
-    const [isDark, setIsDark] = useState(false); // Default to light mode
-    
-    // Placeholder function to simulate global dark mode toggle
-    const toggle = () => {
-        setIsDark(prev => !prev);
-        // In a real app, this would toggle the 'dark' class on the HTML element
-        document.documentElement.classList.toggle('dark');
-    };
-    
-    return { isDark, toggle };
-};
+
 
 const Header = ({ onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isDark, toggle } = useDarkModeToggle(); // <-- Dark mode hook
+  // Use the global theme context so all components stay in sync
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   const handleLinkClick = (path) => (e) => {
     e.preventDefault();
@@ -64,17 +55,17 @@ const Header = ({ onNavigate }) => {
           {/* Desktop CTA Button & Dark Mode Toggle */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Dark Mode Toggle */}
-            <button
-                onClick={toggle}
-                className="p-2 rounded-full text-gray-500 hover:text-emerald-500 dark:text-gray-400 dark:hover:text-emerald-400 transition duration-150"
-                aria-label="Toggle Dark Mode"
-            >
-                {isDark ? (
-                    <SunIcon className="w-6 h-6" />
-                ) : (
-                    <MoonIcon className="w-6 h-6" />
-                )}
-            </button>
+      <button
+        onClick={toggleTheme}
+        className="p-2 rounded-full text-gray-500 hover:text-emerald-500 dark:text-gray-400 dark:hover:text-emerald-400 transition duration-150"
+        aria-label="Toggle Dark Mode"
+      >
+        {isDark ? (
+          <SunIcon className="w-6 h-6" />
+        ) : (
+          <MoonIcon className="w-6 h-6" />
+        )}
+      </button>
             
             <Button variant="primary" onClick={() => onNavigate('login')} className="text-base px-6 py-2">
               Talk To Us
@@ -84,17 +75,17 @@ const Header = ({ onNavigate }) => {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             {/* Mobile Dark Mode Toggle */}
-             <button
-                onClick={toggle}
-                className="p-2 rounded-full text-gray-500 hover:text-emerald-500 dark:text-gray-400 dark:hover:text-emerald-400 focus:outline-none"
-                aria-label="Toggle Dark Mode"
-            >
-                {isDark ? (
-                    <SunIcon className="w-6 h-6" />
-                ) : (
-                    <MoonIcon className="w-6 h-6" />
-                )}
-            </button>
+       <button
+        onClick={toggleTheme}
+        className="p-2 rounded-full text-gray-500 hover:text-emerald-500 dark:text-gray-400 dark:hover:text-emerald-400 focus:outline-none"
+        aria-label="Toggle Dark Mode"
+      >
+        {isDark ? (
+          <SunIcon className="w-6 h-6" />
+        ) : (
+          <MoonIcon className="w-6 h-6" />
+        )}
+      </button>
             
             <button
               onClick={() => setIsOpen(!isOpen)}

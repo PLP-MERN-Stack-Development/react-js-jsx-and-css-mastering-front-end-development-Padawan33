@@ -1,4 +1,3 @@
-// src/components/Card.jsx (COMPLETE Card Component with Transition)
 import React from 'react';
 
 function Card({ title, className = '', children, ...props }) {
