@@ -117,4 +117,19 @@ Global state for tasks and the theme is managed using the React Context API defi
 
 
 Screenshots
-![alt text](<Screenshot (1).png>) ![alt text](<Screenshot (2).png>) ![alt text](<Screenshot (4).png>) ![alt text](<Screenshot (5).png>) ![alt text](<Screenshot (6).png>) ![alt text](<Screenshot (7).png>) ![alt text](<Screenshot (8).png>)
+
+Below are the screenshots from the `screenshots/` folder. If you want different filenames or order, tell me and I will update the README accordingly.
+
+![Screenshot 1](screenshots/Screenshot%20%281%29.png)
+
+![Screenshot 2](screenshots/Screenshot%20%282%29.png)
+
+![Screenshot 3](screenshots/Screenshot%20%284%29.png)
+
+![Screenshot 4](screenshots/Screenshot%20%285%29.png)
+
+![Screenshot 5](screenshots/Screenshot%20%286%29.png)
+
+![Screenshot 6](screenshots/Screenshot%20%287%29.png)
+
+![Screenshot 7](screenshots/Screenshot%20%288%29.png)

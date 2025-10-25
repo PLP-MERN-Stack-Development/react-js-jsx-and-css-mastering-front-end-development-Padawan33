@@ -2,7 +2,8 @@
 import React from 'react';
 import Button from '../components/Button';
 import LocalTaskManager from '../components/LocalTaskManager'; 
-import { SparklesIcon, UsersIcon, TrophyIcon } from '@heroicons/react/24/outline'; 
+import { SparklesIcon, UsersIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import appScreenshot from '../assets/app-screenshot.png';
 
 const trustLogos = ['Team Alpha', 'Innovate Co.', 'Academia Labs', 'Future Tech'];
 
@@ -55,11 +56,14 @@ const HomePage = () => {
           </Button>
         </div>
         
-        {/* Right: Mockup Placeholder */}
+        {/* Right: Actual Screenshot */}
         <div className="md:w-1/2 mt-12 md:mt-0 md:pl-10">
-          <div className="bg-gray-200 h-64 md:h-96 w-full rounded-2xl shadow-2xl flex items-center justify-center text-gray-600 border border-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
-            [Application Screenshot Mockup Placeholder]
-          </div>
+          <img
+            src={appScreenshot}
+            alt="Application Screenshot"
+            className="w-full h-64 md:h-96 object-cover rounded-2xl shadow-2xl border border-gray-300 dark:border-gray-600"
+            style={{ background: '#222' }}
+          />
         </div>
       </section>
 
