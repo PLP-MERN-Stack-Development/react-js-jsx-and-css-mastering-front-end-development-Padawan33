@@ -1,11 +1,10 @@
-// src/components/Navbar.jsx (Verified Working Code)
+// src/components/Navbar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
-// Check this import carefully after the npm install fix!
+import { useTheme } from '../context/ThemeContext.jsx'; // FIX: Added .jsx extension
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid'; 
 
-function Navbar() {
+// Navbar now accepts onNavigate prop
+function Navbar({ onNavigate }) {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
   const buttonText = isDark ? (
@@ -18,16 +17,34 @@ function Navbar() {
     </>
   );
 
+  // Helper function to handle navigation
+  const navigateTo = (path) => {
+    if (onNavigate) {
+        onNavigate(path);
+    }
+  };
+
+  const NavLink = ({ to, children }) => (
+    <a 
+        href="#" // Use anchor tag with href="#" for accessibility 
+        onClick={(e) => { e.preventDefault(); navigateTo(to); }} 
+        className="hover:text-gray-400 transition-colors duration-150"
+    >
+        {children}
+    </a>
+  );
+
   return (
     <header className="p-4 bg-gray-800 text-white shadow-lg w-full z-50">
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
-        <Link to="/" className="text-xl font-semibold hover:text-gray-400">Assignment App</Link>
+        <NavLink to="home" className="text-xl font-semibold hover:text-gray-400">Focus Flow</NavLink>
         <div className="space-x-4 flex items-center">
-          <Link to="/" className="hover:text-gray-400">Home</Link>
-          {/* Link to API Browser */}
-          <Link to="/api-browser" className="hover:text-gray-400">API Browser</Link> 
-          <Link to="/login" className="hover:text-gray-400">Login</Link>
-          <Link to="/register" className="hover:text-gray-400">Register</Link>
+          <NavLink to="home">Home</NavLink>
+          <NavLink to="api">API Browser</NavLink> 
+          {/* NEW: Link to Contacts Page */}
+          <NavLink to="contact">Contacts</NavLink> 
+          <NavLink to="login">Login</NavLink>
+          <NavLink to="register">Register</NavLink>
           
           <button
             onClick={toggleTheme}

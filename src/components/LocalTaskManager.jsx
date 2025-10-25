@@ -1,4 +1,4 @@
-// src/components/LocalTaskManager.jsx (Verified Final Code with Reorder Fix)
+// src/components/LocalTaskManager.jsx (Mobile Friendly Version)
 import React, { useState } from 'react';
 import Card from './Card';
 import Button from './Button';
@@ -39,32 +39,32 @@ function LocalTaskManager() {
     activeFilter, 
     newTaskText, 
     setNewTaskText, 
-    newDueDate,          
-    setNewDueDate,       
-    newTime,             
-    setNewTime,          
-    newCategory,         
-    setNewCategory,      
-    categories,          
+    newDueDate,          
+    setNewDueDate,       
+    newTime,             
+    setNewTime,          
+    newCategory,         
+    setNewCategory,      
+    categories,          
     getCategoryDetails,
-    newRecurrence,       
-    setNewRecurrence,    
+    newRecurrence,       
+    setNewRecurrence,    
     RECURRENCE_OPTIONS,
-    newPriority,          
-    setNewPriority,       
-    PRIORITY_OPTIONS,     
-    getPriorityDetails,   
-    newReminderTime,      
+    newPriority,          
+    setNewPriority,       
+    PRIORITY_OPTIONS,     
+    getPriorityDetails,   
+    newReminderTime,      
     setNewReminderTime,
-    newDescription,       
-    setNewDescription,    
+    newDescription,       
+    setNewDescription,    
     handleAddTask, 
     toggleTask, 
     deleteTask, 
-    editTask,            
-    addSubTask,          
-    toggleSubTask,       
-    moveTask,              
+    editTask,            
+    addSubTask,          
+    toggleSubTask,       
+    moveTask,              
     changeFilter, 
     filteredTasks,
   } = useTasks();
@@ -128,8 +128,10 @@ function LocalTaskManager() {
       >
         
         {/* Task Input Form */}
-        <form onSubmit={handleAddTask} className="flex flex-col space-y-2 mb-6">
-          <div className="flex space-x-2">
+        <form onSubmit={handleAddTask} className="flex flex-col space-y-3 mb-6">
+          
+          {/* Main Input Row: Text Input and Add Button */}
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <input
               type="text"
               value={newTaskText}
@@ -137,14 +139,16 @@ function LocalTaskManager() {
               placeholder="Add a new task..."
               className="flex-grow p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white"
             />
-            <Button type="submit">Add Task</Button>
+            <Button type="submit" className="w-full sm:w-auto flex-shrink-0">Add Task</Button>
           </div>
           
-          {/* Due Date, Time & Category Inputs (Row 1) */}
-          <div className="flex justify-between space-x-4">
+          {/* Due Date, Time & Category Inputs (Row 1 - Now Stacks on Mobile) */}
+          {/* Changed from flex-grow on each item to grid on mobile (sm:grid-cols-3) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3"> 
+            
             {/* Due Date Input Field */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Date:</label>
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Date:</label>
               <input
                 type="date"
                 value={newDueDate}
@@ -152,9 +156,10 @@ function LocalTaskManager() {
                 className="p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:text-white text-sm w-full"
               />
             </div>
-             {/* Time Input Field */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Time:</label>
+            
+            {/* Time Input Field */}
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Time:</label>
               <input
                 type="time"
                 value={newTime}
@@ -164,8 +169,8 @@ function LocalTaskManager() {
             </div>
             
             {/* Category Select Dropdown */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Category:</label>
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Category:</label>
               <select
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
@@ -178,11 +183,13 @@ function LocalTaskManager() {
             </div>
           </div>
 
-          {/* Recurrence, Priority, and Reminder Inputs (Row 2) */}
-          <div className="flex justify-between space-x-4 pt-2">
+          {/* Recurrence, Priority, and Reminder Inputs (Row 2 - Now Stacks on Mobile) */}
+          {/* Changed from flex-grow on each item to grid on mobile (sm:grid-cols-3) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
             {/* Recurrence Input */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Recurrence:</label>
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Recurrence:</label>
               <select
                 value={newRecurrence}
                 onChange={(e) => setNewRecurrence(e.target.value)}
@@ -195,8 +202,8 @@ function LocalTaskManager() {
             </div>
 
             {/* Priority Input */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Priority:</label>
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Priority:</label>
               <select
                 value={newPriority}
                 onChange={(e) => setNewPriority(e.target.value)}
@@ -209,8 +216,8 @@ function LocalTaskManager() {
             </div>
             
             {/* Reminder Time Input */}
-            <div className="flex items-center space-x-2 flex-grow">
-              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap">Reminder:</label>
+            <div className="flex items-center space-x-2 w-full">
+              <label className="text-gray-500 dark:text-gray-400 text-sm whitespace-nowrap flex-shrink-0">Reminder:</label>
               <input
                 type="time"
                 value={newReminderTime}
@@ -220,8 +227,8 @@ function LocalTaskManager() {
             </div>
           </div>
           
-          {/* Description/Notes Input (Row 3) */}
-          <div className="pt-2">
+          {/* Description/Notes Input (Row 3 - Takes Full Width) */}
+          <div className="w-full">
             <textarea
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
@@ -233,12 +240,13 @@ function LocalTaskManager() {
 
         </form>
         {/* Task Filter Buttons (Remains the same) */}
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
           {filterButtons.map((filterName) => (
             <Button
               key={filterName}
               variant={activeFilter === filterName ? 'primary' : 'secondary'}
               onClick={() => changeFilter(filterName)}
+              className="px-3 py-1 text-sm flex-shrink-0"
             >
               {filterName.charAt(0).toUpperCase() + filterName.slice(1)}
             </Button>
@@ -254,6 +262,7 @@ function LocalTaskManager() {
               const isEditing = editingTask && editingTask.id === task.id;
               
               const displayIndex = getDisplayIndex(task.id);
+              const totalDisplayedTasks = tasksToDisplay.length;
               const isFirst = displayIndex === 0;
               const isLast = displayIndex === totalDisplayedTasks - 1;
 
@@ -287,14 +296,14 @@ function LocalTaskManager() {
                             </div>
                         )}
                         
-                        {/* Main Task Content and Action Buttons (grouped in a flex container) */}
-                        <div className="flex flex-grow items-start justify-between">
+                        {/* Main Task Content and Action Buttons (now uses flex-col on mobile) */}
+                        <div className="flex flex-col flex-grow sm:flex-row sm:items-start sm:justify-between">
                             
-                            {/* Task Details Column */}
+                            {/* Task Details Column (Main Content) */}
                             <div className="flex flex-col flex-grow">
                                 
                                 {/* Tags: Category, Priority, and Recurrence */}
-                                <div className="flex items-center space-x-2 mb-1">
+                                <div className="flex flex-wrap items-center gap-2 mb-1">
                                     {/* Category Tag */}
                                     <span 
                                     className={`text-xs font-medium px-2 py-0.5 rounded-full text-white ${categoryDetails.color} w-fit`}
@@ -336,10 +345,10 @@ function LocalTaskManager() {
                                         className="w-full p-1 mb-2 border border-gray-300 rounded-lg text-sm dark:bg-gray-700 dark:text-white focus:outline-none"
                                     />
 
-                                    {/* Edit Fields (Date, Time, Category, Recurrence, Priority, Reminder) */}
-                                    <div className="flex flex-col space-y-2 text-sm">
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Date:</label>
+                                    {/* Edit Fields (Date, Time, Category, Recurrence, Priority, Reminder) - Now uses grid-cols-2 on mobile */}
+                                    <div className="grid grid-cols-2 gap-2 text-sm">
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Date:</label>
                                             <input
                                                 type="date"
                                                 name="dueDate"
@@ -348,8 +357,8 @@ function LocalTaskManager() {
                                                 className="p-1 border border-gray-300 rounded-lg dark:bg-gray-600 dark:text-white flex-grow"
                                             />
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Time:</label>
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Time:</label>
                                             <input
                                                 type="time"
                                                 name="time"
@@ -358,8 +367,8 @@ function LocalTaskManager() {
                                                 className="p-1 border border-gray-300 rounded-lg dark:bg-gray-600 dark:text-white flex-grow"
                                             />
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Category:</label>
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Category:</label>
                                             <select
                                                 name="category"
                                                 value={editingTask.category}
@@ -371,8 +380,8 @@ function LocalTaskManager() {
                                                 ))}
                                             </select>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Recurrence:</label>
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Recurrence:</label>
                                             <select
                                                 name="recurrence"
                                                 value={editingTask.recurrence}
@@ -384,8 +393,8 @@ function LocalTaskManager() {
                                                 ))}
                                             </select>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Priority:</label>
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Priority:</label>
                                             <select
                                                 name="priority"
                                                 value={editingTask.priority}
@@ -397,8 +406,8 @@ function LocalTaskManager() {
                                                 ))}
                                             </select>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <label className="text-gray-500 dark:text-gray-400 text-sm w-20">Reminder:</label>
+                                        <div className="flex items-center space-x-1">
+                                            <label className="text-gray-500 dark:text-gray-400 text-sm flex-shrink-0">Reminder:</label>
                                             <input
                                                 type="time"
                                                 name="reminderTime"
@@ -430,7 +439,7 @@ function LocalTaskManager() {
                                 )}
 
                                 {/* Display Date, Time, and Reminder */}
-                                <div className="flex items-center space-x-4 mt-1">
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
                                     {task.dueDate && (
                                         <span className="text-sm text-red-600 dark:text-red-400">
                                             Due: {formatDate(task.dueDate)}
@@ -452,7 +461,8 @@ function LocalTaskManager() {
                             </div>
                             
                             {/* Action Buttons Column */}
-                            <div className="flex space-x-2 ml-4 flex-shrink-0">
+                            {/* Adjusted to stack buttons vertically on mobile if in display mode */}
+                            <div className={`flex ${isEditing ? 'space-x-2' : 'flex-col space-y-1'} mt-2 sm:mt-0 sm:ml-4 flex-shrink-0`}>
                                 {isEditing ? (
                                     <>
                                     <Button 
@@ -475,21 +485,21 @@ function LocalTaskManager() {
                                     <Button 
                                         variant="secondary" 
                                         onClick={() => handleStartEdit(task)}
-                                        className="text-sm px-2 py-1 flex items-center"
+                                        className="text-sm px-2 py-1 flex items-center justify-center" // Added justify-center for vertical stack alignment
                                     >
                                         <PencilSquareIcon className="w-4 h-4 mr-1"/> Edit
                                     </Button>
                                     <Button 
                                         variant={task.completed ? 'secondary' : 'primary'} 
                                         onClick={() => toggleTask(task.id)}
-                                        className="text-sm px-2 py-1"
+                                        className="text-sm px-2 py-1 justify-center"
                                     >
                                         {task.completed ? 'Undo' : 'Done'}
                                     </Button>
                                     <Button 
                                         variant="danger" 
                                         onClick={() => deleteTask(task.id)}
-                                        className="text-sm px-2 py-1"
+                                        className="text-sm px-2 py-1 justify-center"
                                     >
                                         Delete
                                     </Button>
@@ -514,7 +524,7 @@ function LocalTaskManager() {
                                         <span className={`flex-grow text-gray-700 dark:text-gray-300 ${subTask.completed ? 'line-through' : ''}`}>
                                             - {subTask.text}
                                         </span>
-                                        <span className={`w-3 h-3 rounded-full border ${subTask.completed ? 'bg-green-500 border-green-500' : 'bg-white border-gray-400 dark:bg-gray-800'}`}></span>
+                                        <span className={`w-3 h-3 rounded-full border ${subTask.completed ? 'bg-blue-500 border-blue-500' : 'bg-white border-gray-400 dark:bg-gray-800'}`}></span>
                                     </div>
                                 ))}
                             </div>
@@ -528,7 +538,7 @@ function LocalTaskManager() {
                                 onChange={(e) => setNewSubTaskText(prev => ({ ...prev, [task.id]: e.target.value }))}
                                 className="flex-grow p-1 border border-gray-300 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
                             />
-                            <Button type="submit" className="text-xs px-2 py-1">Add</Button>
+                            <Button type="submit" className="text-xs px-2 py-1 flex-shrink-0">Add</Button>
                         </form>
                         </>
                     )}

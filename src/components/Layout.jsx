@@ -1,18 +1,30 @@
-// src/components/Layout.jsx (Verified Working Code)
+// src/components/Layout.jsx
 import React from 'react';
-import Navbar from './Navbar';
+import Header from './Header';
+import Footer from './Footer';
 
-function Layout({ children }) {
+/**
+ * A global layout wrapper that ensures the Header and Footer are present on every page.
+ * Added dark:bg-gray-900 to ensure the viewport is dark in dark mode.
+ */
+const Layout = ({ children, onNavigate }) => {
   return (
-    // The main container applies the global background and text colors
-    // that respond to the ThemeProvider context.
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-500">
-      <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    // Updated line: Added dark:bg-gray-900 and dark:text-gray-200
+    <div className="min-h-screen flex flex-col font-inter bg-gray-50 dark:bg-gray-900 dark:text-gray-200">
+      
+      {/* Pass the navigation handler to the Header */}
+      <Header onNavigate={onNavigate} /> 
+      
+      {/* Main Content Area */}
+      <main className="flex-grow">
         {children}
       </main>
+
+      {/* The Standard Footer */}
+      <Footer />
+      
     </div>
   );
-}
+};
 
 export default Layout;

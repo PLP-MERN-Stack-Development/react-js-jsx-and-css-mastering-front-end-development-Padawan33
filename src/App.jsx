@@ -1,32 +1,82 @@
-// src/App.jsx (REBUILT CLEAN STRUCTURE)
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 
-// Import necessary providers
-import { ThemeProvider } from './context/ThemeContext'; 
-import { TaskProvider } from './context/TaskContext';
+// FIX: Added .jsx extension to resolve compilation errors
+import Layout from './components/Layout.jsx'; 
+import HomePage from './pages/HomePage.jsx';
+import APIBrowser from './pages/APIBrowserPage.jsx'; 
+import LoginPage from './pages/LoginPage.jsx'; 
+import Button from './components/Button.jsx'; 
 
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import APIBrowserPage from './pages/APIBrowserPage'; 
+import { TaskProvider } from './context/TaskContext.jsx'; 
+import Contacts from './pages/Contacts.jsx'; 
+
+
+// Updated component for Register Page with dark mode fixes
+const RegisterPage = ({ onNavigate }) => { 
+    
+    const handleRegister = (e) => {
+        e.preventDefault();
+        // Placeholder for real registration logic
+        console.log("Registration Successful! Redirecting to Home...");
+        onNavigate('home'); 
+    };
+    
+    return (
+        <div className="pt-32 p-8 max-w-sm mx-auto min-h-[50vh]">
+            {/* Dark mode text/color applied */}
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6 text-center">Join Focus Flow</h1>
+            {/* Dark mode background/border applied to card */}
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 space-y-4">
+                <form onSubmit={handleRegister} className="space-y-4"> 
+                    <input type="text" placeholder="Full Name" className="w-full p-3 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-150" required/>
+                    <input type="email" placeholder="Email Address" className="w-full p-3 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-150" required/>
+                    <input type="password" placeholder="Password" className="w-full p-3 border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-150" required/>
+                    <Button type="submit" variant="primary" className="w-full text-base p-3 font-semibold">Create Account</Button>
+                </form>
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                    Already have an account? 
+                    <a href="#" onClick={() => onNavigate('login')} className="text-emerald-500 hover:text-emerald-600 ml-1">Log in</a>
+                </p>
+            </div>
+        </div>
+    );
+};
+
 
 function App() {
-  return (
-    <ThemeProvider> 
-      <TaskProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Layout><HomePage /></Layout>} />
-            <Route path="/api-browser" element={<Layout><APIBrowserPage /></Layout>} /> 
-            <Route path="/login" element={<Layout><LoginPage /></Layout>} />
-            <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
-          </Routes>
-        </Router>
-      </TaskProvider>
-    </ThemeProvider>
-  );
+    const [currentPage, setCurrentPage] = useState('home'); 
+
+    const handleNavigation = (path) => {
+        setCurrentPage(path);
+        window.scrollTo(0, 0); 
+    };
+
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'home':
+                return <HomePage />;
+            case 'api':
+                return <APIBrowser />;
+            case 'login':
+                return <LoginPage onNavigate={handleNavigation} />; 
+            case 'contact': 
+                // Routing to the new Contacts page
+                return <Contacts />; 
+            case 'register':
+                return <RegisterPage onNavigate={handleNavigation} />; 
+            default:
+                return <HomePage />;
+        }
+    };
+    
+    return (
+        // onNavigate prop is passed down to Layout, which presumably passes it to Navbar
+        <Layout onNavigate={handleNavigation}>
+            <TaskProvider>
+                {renderPage()}
+            </TaskProvider>
+        </Layout>
+    );
 }
 
 export default App;

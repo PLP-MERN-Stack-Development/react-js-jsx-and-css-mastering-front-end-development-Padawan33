@@ -1,36 +1,35 @@
-// src/components/Button.jsx (COMPLETE Button Component with Default Export Fix)
+// src/components/Button.jsx
 import React from 'react';
 
-function Button({ children, onClick, variant = 'primary', className = '', type = 'button', disabled = false }) {
-  let colorClasses = '';
+const Button = ({ children, onClick, variant = 'primary', type = 'button', className = '', ...props }) => {
+  let baseStyles = 'px-4 py-2 rounded-lg font-semibold text-sm transition duration-150 ease-in-out shadow-sm';
+  let variantStyles = '';
+
   switch (variant) {
     case 'primary':
-      colorClasses = 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500';
+      // Updated to use the new Teal/Emerald accent color
+      variantStyles = 'bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-300';
       break;
     case 'secondary':
-      colorClasses = 'bg-gray-500 hover:bg-gray-600 focus:ring-gray-400';
+      variantStyles = 'bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-gray-600';
       break;
     case 'danger':
-      colorClasses = 'bg-red-600 hover:bg-red-700 focus:ring-red-500';
+      variantStyles = 'bg-red-500 text-white hover:bg-red-600 focus:ring-4 focus:ring-red-300';
       break;
     default:
-      colorClasses = 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500';
+      variantStyles = 'bg-gray-500 text-white hover:bg-gray-600';
   }
-
-  // Added transform and hover:scale-105 for interactive animation
-  const baseClasses = `px-4 py-2 rounded-lg font-semibold text-white transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 disabled:bg-gray-400 disabled:hover:scale-100 ${colorClasses} ${className}`;
 
   return (
     <button
-      onClick={onClick}
       type={type}
-      disabled={disabled}
-      className={baseClasses}
+      onClick={onClick}
+      className={`${baseStyles} ${variantStyles} ${className}`}
+      {...props}
     >
       {children}
     </button>
   );
-}
+};
 
-// THIS MUST BE `export default` for your imports to work!
 export default Button;
